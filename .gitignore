@@ -1,0 +1,7 @@
+.venv
+__pycache__
+.DS_Store
+Task01/__pycache__
+Task02/__pycache__
+Task02/filtered_output.csv/.*
+Task03/__pycache__

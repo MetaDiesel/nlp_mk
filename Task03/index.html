@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        
+        input {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Sentiment Analysis</h2>
+    <p>Type a review below and click "Analyze":</p>
+    <input type="text" id="reviewText" placeholder="Enter your review...">
+    <br>
+    <button onclick="analyzeSentiment()">Analyze</button>
+    <p id="result"></p>
+
+    <script>
+        function analyzeSentiment() {
+            const reviewText = document.getElementById("reviewText").value;
+            if (!reviewText) {
+                alert("Please enter a review!");
+                return;
+            }
+
+            fetch(`http://127.0.0.1:8000/predict?text=${encodeURIComponent(reviewText)}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("result").innerHTML =
+                        `Sentiment: <strong>${data.sentiment}</strong> <br> 
+                        Confidence: <strong>${(data.sentiment_score * 100).toFixed(2)}%</strong>`;
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    document.getElementById("result").innerHTML = "Error analyzing sentiment.";
+                });
+        }
+    </script>
+</body>
+
+</html>
